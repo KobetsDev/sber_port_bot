@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+    # bot:
+    #     container_name: bot
+    #     build:
+    #         context: ./bot
+    #         dockerfile: Dockerfile
+    #     restart: always
+    #     environment:
+    #         MONGO_DB: mongodb://root:pass_4_db_secret321@mongo:27017/
+    #         BOT_TOKEN: 5503466607:AAEVD0wcKLgYuz5ub9V_eD_5lcxbOUgPkjw
+    #     volumes:
+    #         - ./bot/file:/usr/src/tg_oso/file
+    #         - ./bot/logs.log:/usr/src/tg_oso/logs.log
+    #     depends_on:
+    #         - mongo
+
+    mongo:
+        container_name: mongo
+        image: mongo
+        restart: always
+        volumes:
+            - ./mongo-data:/data/db
+            - ./backup:/backup/
+        ports:
+            - 27017:27017
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: root
+            MONGO_INITDB_ROOT_PASSWORD: pass_4_db_secret321

@@ -1,0 +1,80 @@
+[{
+  "_id": {
+    "$oid": "63618137b17d6e31aa0ae4ad"
+  },
+  "author": "Ksy",
+  "title": "День рождения",
+  "media": "AgACAgIAAxkBAAIPnWNhgMxq5_uq4eTJaD4urYJ5V-SaAALrzDEbxFIJS1rV5k7GzqCGAQADAgADcwADKgQ",
+  "media_type": "photo",
+  "text": "Я, Саша, очень сильно люблю свою прекрасную девушку Ксюшу. Она у меня самая лучшая ❤️",
+  "places": 2,
+  "participants": [],
+  "timestamp": 1667464436,
+  "status": 1,
+  "notified": 0
+},{
+  "_id": {
+    "$oid": "63618244b17d6e31aa0ae4ae"
+  },
+  "author": "Ksy",
+  "title": "Мой парень самый умный",
+  "media": "AgACAgIAAxkBAAIPw2Nhgdo3itgFR21d0l29Qx5OtzkuAALvzDEbxFIJS81EVdLP5o8YAQADAgADcwADKgQ",
+  "media_type": "photo",
+  "text": "Саша, это очень классно, я тобой горжусь! Люблю тебя)",
+  "places": 2,
+  "participants": [],
+  "timestamp": 1659430800,
+  "status": 0,
+  "notified": 0
+},{
+  "_id": {
+    "$oid": "636be057a5d080b70f3eb647"
+  },
+  "author": "Александр",
+  "title": "🥶🥶🥶🥶🥶",
+  "media": "AgACAgIAAxkBAAIW3WNr4EU886BUyoFlU0eOekv7BeWWAAIhyjEbZ8dgSwpeIlq5yUc2AQADAgADcwADKwQ",
+  "media_type": "photo",
+  "text": "фыв",
+  "places": 22,
+  "participants": [
+    420624020
+  ],
+  "timestamp": 1666976400,
+  "order_path": null,
+  "status": 1,
+  "notified": 0
+},{
+  "_id": {
+    "$oid": "636be205c964a5884e7bac86"
+  },
+  "author": "Ksy",
+  "title": "Мероприятие",
+  "media": "AgACAgIAAxkBAAIXC2Nr4X-mvjkI8n5n12spC43_lIJGAAIJwzEbLgFhS-fQYYO23cA8AQADAgADcwADKwQ",
+  "media_type": "photo",
+  "text": "Какой-то текст мероприятия",
+  "places": 5,
+  "participants": [
+    420624020
+  ],
+  "timestamp": 1668411970,
+  "order_path": "file\\636be205c964a5884e7bac86\\ezgif-1-69c34b3855.gif",
+  "status": 0,
+  "notified": 1
+},{
+  "_id": {
+    "$oid": "636d5e7e9f1f354ed19b5134"
+  },
+  "author": "Ksy",
+  "title": "Я устала",
+  "media": "AgACAgIAAxkBAAIadWNtXjn6m6CG3X1si2e8dkra67P7AAIgxDEbDTJwS6MKitn4_l8GAQADAgADcwADKwQ",
+  "media_type": "photo",
+  "text": "А это просто Миша стоит",
+  "places": 1,
+  "participants": [
+    420624020
+  ],
+  "timestamp": 1668329170,
+  "order_path": "file\\636d5e7e9f1f354ed19b5134\\стипендия.png",
+  "status": 1,
+  "notified": 0
+}]

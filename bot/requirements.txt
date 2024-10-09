@@ -1,0 +1,7 @@
+aiogram==2.14.3
+python-dotenv
+pymongo
+pymongo[srv]
+aioschedule
+xlsxwriter
+pytz
