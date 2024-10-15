@@ -11,7 +11,7 @@ services:
             MONGO_DB: mongodb://root:pass_4_db_secret321@195.133.25.151:27017
             BOT_TOKEN: 6689643880:AAHUunBjAx944sKOb_gE7oRl_O0pHfsux1w
         volumes:
-            - ./bot/file:/usr/src/tg_sber_bot/file
+            # - ./bot/file:/usr/src/tg_sber_bot/file
             - ./bot/logs.log:/usr/src/tg_sber_bot/logs.log
         depends_on:
             - mongo
