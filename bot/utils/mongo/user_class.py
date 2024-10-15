@@ -28,8 +28,8 @@ class User:
                 'last_name': user.get('full_name')[0],  # Фамилия
                 'first_name': user.get('full_name')[1],  # Имя
                 'patronymic': user.get('full_name')[2],  # Отчество
-                'faculty': user.get('faculty'),
-                'group': user.get('group'),
+                'email': user.get('email'),
+                'university': user.get('university'),
                 'phone_number': user.get('phone_number'),
                 # 'is_admin': False,
             }})
@@ -43,8 +43,8 @@ class User:
             'last_name': user.get('full_name')[0],  # Фамилия
             'first_name': user.get('full_name')[1],  # Имя
             'patronymic': user.get('full_name')[2],  # Отчество
-            'faculty': user.get('faculty'),
-            'group': user.get('group'),
+            'email': user.get('email'),
+            'university': user.get('university'),
             'phone_number': user.get('phone_number'),
             # 'phone_number': phone_number,
             'is_admin': False,

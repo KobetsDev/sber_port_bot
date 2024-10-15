@@ -4,6 +4,7 @@ import logging
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Text
 from aiogram.types import Message, ReplyKeyboardRemove
+from keyboards.inline.change_account import change_account
 from data.config import FACULTY_MASS
 from keyboards.default.cancel import cancel
 from keyboards.default.main_kb import main_kb
@@ -21,18 +22,19 @@ async def register(message: Message):
     user = await User(message.from_user.id).get_info()
     if user:
         return await message.answer(f'{user.get("first_name")}, вы уже зарегистрированны\!')
-    await message.answer('📇Введи своё ФИО', reply_markup=ReplyKeyboardRemove())
+    await message.answer('📇Введи своё ФИО\nНа то имя будт выдат сертификат\!',
+                         reply_markup=ReplyKeyboardRemove())
     await RegisterState.register_full_name.set()
 
 
-# @dp.message_handler(Text(equals='Отменить регистрацию', ignore_case=True), state='*')
-# async def cancel_register_handler(message: Message, state: FSMContext):
-#     """Отменяем ввод данных для мероприятия"""
-#     current_state = await state.get_state()
-#     if current_state is None:
-#         return await message.reply('Пасхалка 1/3\!', reply=False, reply_markup=register_kb)
-#     await state.finish()
-#     await message.reply('ОК', reply=False, reply_markup=register_kb)
+@dp.message_handler(Text(equals='Отменить редактирование', ignore_case=True), state='*')
+async def cancel_update_handler(message: Message, state: FSMContext, keyboard):
+    """Отменяем ввод данных для регистрации"""
+    current_state = await state.get_state()
+    if current_state is None:
+        return await message.reply('Пасхалка 2/3\!', reply=False, reply_markup=keyboard)
+    await state.finish()
+    await message.answer('ОК', reply_markup=keyboard)
 
 
 @dp.message_handler(state=RegisterState.register_full_name)
@@ -42,41 +44,51 @@ async def get_full_name(message: Message, state: FSMContext):
         return await message.answer('Вы ввели не полное ФИО\!\nПопробуйте снова')
     async with state.proxy() as data:
         data['full_name'] = [el.title() for el in full_name]
-    await message.answer(f'🏢Введи свой факультет:\n' + "\n".join(FACULTY_MASS))
-    await RegisterState.register_faculty.set()
+    await message.answer(f'🏢Введи свою почту')
+    await RegisterState.register_email.set()
 
 
-@dp.message_handler(state=RegisterState.register_faculty)
+@dp.message_handler(state=RegisterState.register_email)
 async def get_faculty(message: Message, state: FSMContext):
-    faculty = message.text.upper()
-    if faculty not in [fac.upper() for fac in FACULTY_MASS]:
-        return await message.answer('Вы ввели не существующий факультет\!\nПопробуйте снова')
+    email = message.text#.upper()
+    # if faculty not in [fac.upper() for fac in FACULTY_MASS]:
+    #     return await message.answer('Вы ввели не существующий факультет\!\nПопробуйте снова')
     async with state.proxy() as data:
-        data['faculty'] = faculty
-    await message.answer('👥Введи свою группу')
-    await RegisterState.register_group.set()
+        data['email'] = email
+    await message.answer('👥Введи свой университет')
+    await RegisterState.register_university.set()
 
 
-@dp.message_handler(state=RegisterState.register_group)
+@dp.message_handler(state=RegisterState.register_university)
 async def get_group(message: Message, state: FSMContext):
-    group = message.text.upper()
+    university = message.text.upper()
     async with state.proxy() as data:
-        data['group'] = group
-    await message.answer('📱Если хочешь, то можете оставить свой телефон для связи\.', reply_markup=cancel(phone=True))
+        data['university'] = university
+    await message.answer('📱Если хочешь, то можете оставить свой телефон для связи\.',
+                         reply_markup=cancel(phone=True))
     await RegisterState.register_phone_number.set()
 
 
 @dp.message_handler(content_types='contact', state=RegisterState.register_phone_number)
 async def get_phone_number_on_tg_contact(message: Message, state: FSMContext):
     '''Получаем отправленный через contact тел.'''
+    print('get_phone_number_on_tg_contact')
     async with state.proxy() as data:
         data['phone_number'] = message.contact.phone_number
     data = await state.get_data()
     await message.answer(print_account(user=data))
-    await message.reply('🎉Отлично\!\nТеперь поклацай по кнопочкам, что бы посмотреть что я умею\.', reply=False, reply_markup=main_kb)
+    # await message.reply('🎉Отлично\!\nТеперь поклацай по кнопочкам, что бы посмотреть что я умею\.',
+    #                     reply=False, reply_markup=main_kb)
     user = await state.get_data()
     try:
-        await User(message.from_user.id).register_user(user=user)
+        hasUser  = await User(message.from_user.id).get_info()
+        if hasUser:
+            await User(message.from_user.id).update_user(user=user)
+            await message.answer('Всё\! Добро пожаловать', reply_markup=main_kb)
+        else:
+            await User(message.from_user.id).register_user(user=user)
+            await message.reply('🎉Отлично\!\nТеперь поклацай по кнопочкам, что бы посмотреть что я умею\.',
+                                reply=False, reply_markup=main_kb)
     except Exception as e:
         logging.error(e)
     await state.finish()
@@ -87,11 +99,18 @@ async def get_phone_number_on_write(message: Message, state: FSMContext):
     '''Получаем введённый тел.'''
     data = await state.get_data()
     if message.text == 'Пропустить':
-        await message.answer(print_account(user=data))
-        await message.reply('🎉Отлично\!\nТеперь поклацай по кнопочкам, что бы посмотреть что я умею\.', reply=False, reply_markup=main_kb)
+        await message.answer(print_account(user=data), reply_markup=change_account())
         user = await state.get_data()
         try:
-            await User(message.from_user.id).register_user(user=user)
+            hasUser  = await User(message.from_user.id).get_info()
+            if hasUser:
+                await User(message.from_user.id).update_user(user=user)
+                await message.answer('Всё\! Добро пожаловать', reply_markup=main_kb)
+            else:
+                await User(message.from_user.id).register_user(user=user)
+                await message.reply('🎉Отлично\!\nТеперь поклацай по кнопочкам, что бы посмотреть что я умею\.',
+                                    reply=False, reply_markup=main_kb)
+
         except Exception as e:
             logging.error(e)
         await state.finish()

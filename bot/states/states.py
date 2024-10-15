@@ -3,11 +3,12 @@ from aiogram.dispatcher.filters.state import State, StatesGroup
 
 
 class EventState(StatesGroup):
-    title = State()
-    photo = State()
+    # title = State()
+    # photo = State()
     text = State()
-    date = State()
-    places = State()
+    jazz = State()
+    # date = State()
+    # places = State()
     check = State()
 
 
@@ -23,16 +24,15 @@ class UploadState(StatesGroup):
 
 class RegisterState(StatesGroup):
     register_full_name = State()
-    register_faculty = State()
-    register_group = State()
+    register_email = State()
+    register_university = State()
     register_phone_number = State()
     register_check = State()
 
 
 class UpdateState(StatesGroup):
-    # Добавить update_ так как путается с register
     update_full_name = State()
-    update_faculty = State()
-    update_group = State()
+    update_email = State()
+    update_university = State()
     update_phone_number = State()
     update_check = State()

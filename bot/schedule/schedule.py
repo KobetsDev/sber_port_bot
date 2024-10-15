@@ -1,13 +1,12 @@
 import asyncio
 import logging
-import time
 
 import aioschedule
 from loader import bot
-from utils.human_datetime import get_datetime, humanize_datetime
 from utils.mongo.events_class import Events
+from utils.mongo.user_class import User
 from aiogram.utils import exceptions
-
+from handlers.event.print_events import print_events
 
 async def send_message(user_id: int, text: str, disable_notification: bool = False) -> bool:
     '''Отравляем сообщения ловля все исключения'''
@@ -31,32 +30,25 @@ async def send_message(user_id: int, text: str, disable_notification: bool = Fal
     return False
 
 
-async def send(event: dict, status: int) -> None:
+async def send(event: dict) -> None:
     '''Проходимся по участникам'''
-    event_human_datetime = humanize_datetime(get_datetime(event.get('timestamp')))
-    for user in event.get('participants'):
-        user_chat_info = await bot.get_chat(user)
-        await send_message(user_id=user,
-                           text=f'{user_chat_info.first_name}, не забудь про *{event.get("title")}* \nОно пройдёт `{event_human_datetime}`')
-    await Events.set_notified(_id=event.get('_id'), status=status)
+    users = await User(0).get_all()
+    for user in users:
+        await print_events(events=[event], useId=user.get('_id'))
+    await Events.set_notified(_id=event.get('_id'), status=True)
 
 
 async def send_notify() -> None:
-    events = await Events.get_events_for_next_day(is_admin=False)
+    events = await Events.get_all()
     for event in events:
-        timestamp = event.get('timestamp')
-        time_before_event: int = timestamp - int(time.time())
-        notified_status = int(event.get('notified'))  # 1 сутки 2 два часа
-        # if notified_status != None:  # Если ещё не было напоминаний and notified_status <= 0 TODO странная проверка
-        if (3600*2) <= time_before_event <= 86400 and notified_status < 1:
-            await send(event=event, status=1)
-        elif 0 <= time_before_event <= (3600*2) and notified_status < 2:
-            await send(event=event, status=2)
+        notified_status = int(event.get('notified'))
+        if not notified_status:
+            await send(event)
 
 
 async def scheduler():
     # aioschedule.every(30).minutes.do(send_notify)
-    aioschedule.every(1).seconds.do(send_notify)
+    aioschedule.every(10).seconds.do(send_notify)
     while True:
         await aioschedule.run_pending()
         await asyncio.sleep(1)

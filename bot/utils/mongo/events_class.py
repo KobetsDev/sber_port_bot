@@ -21,16 +21,17 @@ class Events:
     async def add_event(self, event: dict) -> bool:
         event_to_add = {
             'author': event.get('author'),
-            'title': event.get('title'),
-            'media': event.get('media'),
-            'media_type': event.get('media_type'),
+            # 'title': event.get('title'),
+            # 'media': event.get('media'),
+            # 'media_type': event.get('media_type'),
             'text': event.get('text'),
-            'places': int(event.get('places')),  # Всего мест
-            'participants': [],  # Участники
+            'jazz': event.get('jazz'),
+            # 'places': int(event.get('places')),  # Всего мест
+            # 'participants': [],  # Участники
             'timestamp': event.get('timestamp'),
             # 'order_path': event.get('order_path'),
-            'status': self.event_status["valid"],  # valid, not valid
-            'notified': 0,  # valid 1, not valid 0
+            # 'status': self.event_status["valid"],  # valid, not valid
+            'notified': False,  # valid 1, not valid 0
         }
         try:
             collection_events.insert_one(event_to_add)
@@ -103,11 +104,11 @@ class Events:
             return False
 #######################
 
-    async def get_all(is_admin: bool) -> list | bool:
+    async def get_all() -> list | bool:
         """Получаем все мероприятия"""
         command = {}
-        if not is_admin:
-            command['status'] = 1
+        # if not is_admin:
+        #     command['status'] = 1
         try:
             return list(collection_events.find(command).sort('timestamp', -1))
         except Exception as e:

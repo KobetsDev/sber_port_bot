@@ -5,15 +5,15 @@ from schedule.schedule import scheduler
 
 async def startup(dp):
     # import filters
-    # import middlewares
+    import middlewares
     # filters.setup(dp)
-    # middlewares.setup(dp)
+    middlewares.setup(dp)
 
     # from utils.notify_admins import on_startup_notify
     # await on_startup_notify(dp)
     await set_default_commands(dp)
 
-    # asyncio.create_task(scheduler())
+    asyncio.create_task(scheduler())
 
 
 async def shutdown(dp):
