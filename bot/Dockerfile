@@ -5,5 +5,5 @@ WORKDIR /usr/src/tg_sber_bot
 COPY . .
 
 RUN pip install -r requirements.txt
-RUN echo "create logs\n" > logs.log
+RUN echo "Create logs\n" > logs.log
 CMD ["python", "app.py"]
