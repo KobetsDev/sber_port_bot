@@ -1,6 +1,6 @@
 FROM python:3.10
 
-WORKDIR /usr/src/tg_oso
+WORKDIR /usr/src/tg_sber_bot
 
 COPY . .
 
