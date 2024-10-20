@@ -25,9 +25,9 @@ def cancel(with_ok: bool = False, phone: bool = False, update: bool = False, add
         )
 
     if phone:
-        buttons.append(
-            KeyboardButton(text="Пропустить")
-        )
+        # buttons.append(
+        #     KeyboardButton(text="Пропустить")
+        # )
         buttons.append(
             KeyboardButton(text="Отправить", request_contact=True)
         )

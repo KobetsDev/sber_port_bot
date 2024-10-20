@@ -21,8 +21,8 @@ async def bot_start(message: Message):
         else:
             await message.answer(f'{user.get("first_name")}, добро пожаловать домой\.', reply_markup=main_kb)
     else:
-        if random.randint(0, 1) == 1:
-            await message.answer(f"👀Ты для меня что то новенькое\.\n📄Тебе нужно рассказать о себе, и тогда наше общение пойдёт дальше\.",
+        # if random.randint(0, 1) == 1:
+            await message.answer(f"Бот TechQuest запущен\! Чтобы зарегистрироваться в проекте и получить доступ к лекциям, заполни небольшую анкету",
                                  reply_markup=register_kb)
-        else:
-            await message.answer(f"👀Я не узнал вас, но это не повторится\.\n📄Тебе нужно рассказать о себе, что бы я показал что умею\.", reply_markup=register_kb)
+        # else:
+        #     await message.answer(f"👀Я не узнал вас, но это не повторится\.\n📄Тебе нужно рассказать о себе, что бы я показал что умею\.", reply_markup=register_kb)

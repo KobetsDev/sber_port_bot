@@ -4,6 +4,7 @@ import logging
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Text
 from aiogram.types import Message, ReplyKeyboardRemove
+from handlers.event.print_events import print_events
 from keyboards.inline.change_account import change_account
 from data.config import FACULTY_MASS
 from keyboards.default.cancel import cancel
@@ -12,6 +13,7 @@ from loader import dp
 from states.states import RegisterState
 from utils.misc.throttling import rate_limit
 from utils.mongo.user_class import User
+from utils.mongo.events_class import Events
 
 from .print_account import print_account
 
@@ -64,15 +66,29 @@ async def get_group(message: Message, state: FSMContext):
     university = message.text.upper()
     async with state.proxy() as data:
         data['university'] = university
-    await message.answer('📱Если хочешь, то можете оставить свой телефон для связи\.',
-                         reply_markup=cancel(phone=True))
+    await message.answer('Введи свой факультет\.', reply_markup=cancel())
+    await RegisterState.register_faculty.set()
+
+@dp.message_handler(state=RegisterState.register_faculty)
+async def get_group(message: Message, state: FSMContext):
+    faculty = message.text.upper()
+    async with state.proxy() as data:
+        data['faculty'] = faculty
+    await message.answer('Введи свой курс\.', reply_markup=cancel())
+    await RegisterState.register_course.set()
+    
+@dp.message_handler(state=RegisterState.register_course)
+async def get_group(message: Message, state: FSMContext):
+    course = message.text.upper()
+    async with state.proxy() as data:
+        data['course'] = course
+    await message.answer('Введи свой телефон\.', reply_markup=cancel(phone=True))
     await RegisterState.register_phone_number.set()
 
 
 @dp.message_handler(content_types='contact', state=RegisterState.register_phone_number)
 async def get_phone_number_on_tg_contact(message: Message, state: FSMContext):
     '''Получаем отправленный через contact тел.'''
-    print('get_phone_number_on_tg_contact')
     async with state.proxy() as data:
         data['phone_number'] = message.contact.phone_number
     data = await state.get_data()
@@ -84,33 +100,39 @@ async def get_phone_number_on_tg_contact(message: Message, state: FSMContext):
         hasUser  = await User(message.from_user.id).get_info()
         if hasUser:
             await User(message.from_user.id).update_user(user=user)
-            await message.answer('Всё\! Добро пожаловать', reply_markup=main_kb)
+            await message.answer('Всё\!', reply_markup=main_kb)
         else:
             await User(message.from_user.id).register_user(user=user)
-            await message.reply('🎉Отлично\!\nТеперь поклацай по кнопочкам, что бы посмотреть что я умею\.',
+            await message.reply('''Отлично\! Проверь, верно ли указаны данные\?
+Это важно, так как сертификат участника TechQuest будет выдан на данные, которые ты указал в анкете\.
+Чтобы отредактировать информацию о себе нажми на кнопку "Анкета цчастника"\.''',
                                 reply=False, reply_markup=main_kb)
+            events = await Events.get_all()
+            await print_events(events, useId=message.from_user.id, 
+                    #    events, edit=False, is_admin=is_admin
+                       )
     except Exception as e:
         logging.error(e)
     await state.finish()
 
 
-@dp.message_handler(content_types='text', state=RegisterState.register_phone_number)
-async def get_phone_number_on_write(message: Message, state: FSMContext):
-    '''Получаем введённый тел.'''
-    data = await state.get_data()
-    if message.text == 'Пропустить':
-        await message.answer(print_account(user=data), reply_markup=change_account())
-        user = await state.get_data()
-        try:
-            hasUser  = await User(message.from_user.id).get_info()
-            if hasUser:
-                await User(message.from_user.id).update_user(user=user)
-                await message.answer('Всё\! Добро пожаловать', reply_markup=main_kb)
-            else:
-                await User(message.from_user.id).register_user(user=user)
-                await message.reply('🎉Отлично\!\nТеперь поклацай по кнопочкам, что бы посмотреть что я умею\.',
-                                    reply=False, reply_markup=main_kb)
+# @dp.message_handler(content_types='text', state=RegisterState.register_phone_number)
+# async def get_phone_number_on_write(message: Message, state: FSMContext):
+#     '''Получаем введённый тел.'''
+#     data = await state.get_data()
+#     if message.text == 'Пропустить':
+#         await message.answer(print_account(user=data), reply_markup=change_account())
+#         user = await state.get_data()
+#         try:
+#             hasUser  = await User(message.from_user.id).get_info()
+#             if hasUser:
+#                 await User(message.from_user.id).update_user(user=user)
+#                 await message.answer('Всё\! Добро пожаловать', reply_markup=main_kb)
+#             else:
+#                 await User(message.from_user.id).register_user(user=user)
+#                 await message.reply('🎉Отлично\!\nТеперь поклацай по кнопочкам, что бы посмотреть что я умею\.',
+#                                     reply=False, reply_markup=main_kb)
 
-        except Exception as e:
-            logging.error(e)
-        await state.finish()
+#         except Exception as e:
+#             logging.error(e)
+#         await state.finish()

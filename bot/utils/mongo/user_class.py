@@ -30,6 +30,8 @@ class User:
                 'patronymic': user.get('full_name')[2],  # Отчество
                 'email': user.get('email'),
                 'university': user.get('university'),
+                'faculty': user.get('faculty'),
+                'course': user.get('course'),
                 'phone_number': user.get('phone_number'),
                 # 'is_admin': False,
             }})
@@ -45,6 +47,8 @@ class User:
             'patronymic': user.get('full_name')[2],  # Отчество
             'email': user.get('email'),
             'university': user.get('university'),
+            'faculty': user.get('faculty'),
+            'course': user.get('course'),
             'phone_number': user.get('phone_number'),
             # 'phone_number': phone_number,
             'is_admin': False,

@@ -9,8 +9,8 @@ from utils.mongo.user_class import User
 from .print_account import print_account
 
 
-@rate_limit(3, '🗿Мои данные🗿')
-@dp.message_handler(Text(equals='🗿Мои данные🗿'), state='*')
+@rate_limit(3, 'Анкета участника')
+@dp.message_handler(Text(equals='Анкета участника'), state='*')
 async def user_account(message: Message):
     '''Аккаунт пользователя'''
     user = await User(message.from_user.id).get_info()

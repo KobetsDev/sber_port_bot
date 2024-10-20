@@ -58,8 +58,8 @@ from .print_events import print_events
 #     # await message.answer(f'👇Вск мероприятия в которых ты участвовал👇', reply_markup=else_months(my=message.from_user.id))
 
 
-@rate_limit(3, '🎭Мероприятия')
-@dp.message_handler(Text(equals="🎭Мероприятия"), state='*')
+@rate_limit(3, 'Расписание лекций')
+@dp.message_handler(Text(equals="Расписание лекций"), state='*')
 async def events(message: Message, keyboard: ReplyKeyboardMarkup, is_admin: bool):
     events = await Events.get_all(
         # is_admin=is_admin=is_admin
