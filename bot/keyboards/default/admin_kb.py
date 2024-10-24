@@ -5,10 +5,11 @@ admin_kb = ReplyKeyboardMarkup(resize_keyboard=True)
 admin_kb.row(KeyboardButton(text='Расписание лекций'),)
 #              KeyboardButton(text='📥Моё участие📥'))
 admin_kb.row(KeyboardButton(text='📍Добавить мероприятие'),
-            #  KeyboardButton(text='✏️Редактировать мероприятие')
+             KeyboardButton(text='Отправить соощение всем пользователям')
              )
 admin_kb.row(
     # KeyboardButton(text='👥Все пользователи'),
+    KeyboardButton(text='Задание TechQuest'),
              KeyboardButton(text='Анкета участника'))
 # admin_kb.row(
 #     KeyboardButton(text='📑Распоряжения'),

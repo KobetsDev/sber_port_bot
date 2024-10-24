@@ -38,6 +38,20 @@ class User:
             return True
         except Exception:
             return False
+        
+    async def update_blocks_user(self, user: dict) -> bool:
+        try:
+            collection_users.update_one({
+                '_id': self.user_id
+            }, {"$set": {
+                'block1': user.get('block1'),
+                'block2': user.get('block2'),
+                'block3': user.get('block3'),
+                'block4': user.get('block4'),
+            }})
+            return True
+        except Exception:
+            return False
 
     async def register_user(self, user: dict) -> bool:
         user_to_add = {

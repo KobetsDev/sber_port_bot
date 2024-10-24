@@ -78,7 +78,8 @@ async def event_jazz(message: Message, state: FSMContext, keyboard):
     """Текст мероприятия"""
     async with state.proxy() as data:
         data['jazz'] = message.text
-    await message.reply(f'Всё правильно?', reply=False, reply_markup=cancel(add=True, with_ok=True))
+    await message.reply(f'Всё правильно?', reply=False,
+                        reply_markup=cancel(add=True, with_ok=True))
     await EventState.next()
     await message.answer(data.get('text'),  reply_markup=jazz_keyboard(data.get('jazz')))
 

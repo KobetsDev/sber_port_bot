@@ -1,9 +1,6 @@
 
 from aiogram .types import Message
-from data.config import EVENT_FORM, HIDE_TITLE
 from keyboards.inline import jazz_keyboard
-from keyboards.inline.event import subscribe_keyboard
-from utils.human_datetime import get_datetime, humanize_datetime
 from aiogram.utils.markdown import escape_md
 from loader import bot
 
@@ -16,7 +13,7 @@ async def print_events(events: object, useId: int, edit: bool = False, is_admin:
 
     for event in events:
         await bot.send_message(useId,
-                                         event.get('text'),
+                                         escape_md(event.get('text')),
                                          reply_markup=jazz_keyboard(link=event.get('jazz')))
         # text = EVENT_FORM.format(
         #     title,

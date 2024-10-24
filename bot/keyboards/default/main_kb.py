@@ -7,5 +7,5 @@ main_kb.row(KeyboardButton(text='Расписание лекций'),
             # KeyboardButton(text='📥Моё участие📥')
             )
 main_kb.row(
-    # KeyboardButton(text='📑Распоряжения'), 
-            KeyboardButton(text='Анкета участника'))
+    KeyboardButton(text='Задание TechQuest'), 
+    KeyboardButton(text='Анкета участника'))

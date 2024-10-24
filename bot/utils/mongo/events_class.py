@@ -31,7 +31,7 @@ class Events:
             'timestamp': event.get('timestamp'),
             # 'order_path': event.get('order_path'),
             # 'status': self.event_status["valid"],  # valid, not valid
-            'notified': False,  # valid 1, not valid 0
+            'notified': True,  # valid 1, not valid 0
         }
         try:
             collection_events.insert_one(event_to_add)

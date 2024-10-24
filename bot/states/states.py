@@ -12,10 +12,14 @@ class EventState(StatesGroup):
     check = State()
 
 
-class OrderState(StatesGroup):
-    date = State()
-    link = State()
+class MessageState(StatesGroup):
+    message = State()
 
+class BlocksState(StatesGroup):
+    block1 = State()
+    block2 = State()
+    block3 = State()
+    block4 = State()
 
 class UploadState(StatesGroup):
     event = State()
