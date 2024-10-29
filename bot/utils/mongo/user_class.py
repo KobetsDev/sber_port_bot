@@ -66,6 +66,10 @@ class User:
             'phone_number': user.get('phone_number'),
             # 'phone_number': phone_number,
             'is_admin': False,
+            'block1': '-',
+            'block2': '-',
+            'block3': '-',
+            'block4': '-',
             'date_registered': int(time.time()),
             'date_last_active': int(time.time()),
         }

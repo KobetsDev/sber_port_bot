@@ -8,7 +8,7 @@ admin_kb.row(KeyboardButton(text='📍Добавить мероприятие'),
              KeyboardButton(text='Отправить соощение всем пользователям')
              )
 admin_kb.row(
-    # KeyboardButton(text='👥Все пользователи'),
+    KeyboardButton(text='👥Все пользователи'),
     KeyboardButton(text='Задание TechQuest'),
              KeyboardButton(text='Анкета участника'))
 # admin_kb.row(

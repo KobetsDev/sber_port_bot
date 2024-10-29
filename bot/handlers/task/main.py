@@ -17,8 +17,7 @@ from keyboards.default.cancel import cancel
 #     """Отменяем ввод данных для мероприятия"""
 #     await state.finish()
 #     await message.reply('ОК', reply=False, reply_markup=keyboard)
-text = '''Как получить сертификат участника?
-
+text = '''
 В каждом блоке лекций в трансляции выступления спикера зашито кодовое слово.
 Вы увидите его на одном из слайдов презентации. Дополнительно спикер сделает акцент на этом слове и напомнит правила задания.
 Вы точно не пропустите кодовое слово, если будете смотреть лекцию.
@@ -28,7 +27,7 @@ text = '''Как получить сертификат участника?
 
 @dp.message_handler(Text(equals="Задание TechQuest"), state="*")
 async def add_events(message: Message):
-    await message.answer(escape_md(text),
+    await message.answer("*Как получить сертификат участника?*" + escape_md(text),
 reply_markup=cancel(add=True)
 )
     await message.reply(escape_md('Введи кодовое слово 1 блока. Если ты его не знаешь, введи "-"'), reply=False,
@@ -68,6 +67,6 @@ async def block4(message: Message, state: FSMContext, keyboard: ReplyKeyboardMar
     await message.reply(escape_md('Записал!'), reply=False,
                         reply_markup=keyboard)
     event = await state.get_data()
-    print(event)
+    # print(event)
     await User(message.from_user.id).update_blocks_user(event)
     await state.finish()
